@@ -61,7 +61,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding-top: 60px;
+            padding: 0 20px;
         }
         .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px #000; }
         .hero p { font-size: 1.2rem; margin-bottom: 2rem; max-width: 600px; }
@@ -76,26 +76,27 @@
         }
         .hero-btn:hover { background: var(--mc-green); color: #000; }
 
-        /* --- 实时状态 --- */
-        .status-section {
+        /* --- 服务器IP展示区 --- */
+        .ip-section {
             padding: 4rem 10%;
             background: #222;
             text-align: center;
         }
-        .status-card {
+        .ip-box {
             background: var(--mc-gray);
-            padding: 2rem;
+            padding: 1.5rem 2rem;
             border-radius: 10px;
-            display: inline-flex;
-            gap: 3rem;
+            display: inline-block;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            flex-wrap: wrap;
-            justify-content: center;
+            margin-top: 1rem;
         }
-        .status-item h3 { color: #888; font-size: 0.9rem; margin-bottom: 0.5rem; }
-        .status-value { font-size: 2rem; font-weight: bold; }
-        .online { color: var(--mc-green); }
-        .offline { color: #ff5555; }
+        .ip-address {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--mc-green);
+            letter-spacing: 1px;
+        }
+        .ip-tip { margin-top: 15px; color: #aaa; font-size: 0.9rem; }
 
         /* --- 特色玩法 --- */
         .features { padding: 4rem 10%; }
@@ -147,7 +148,7 @@
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
             nav ul { display: none; }
-            .status-card { flex-direction: column; gap: 1.5rem; }
+            .ip-address { font-size: 1.5rem; }
         }
     </style>
 </head>
@@ -155,13 +156,13 @@
 
     <!-- 导航栏 -->
     <header>
-        <div class="logo"> GTL 2 B 2 T生存服</div>
+        <div class="logo">无规则生存服</div>
         <nav>
             <ul>
                 <li><a href="#home">首页</a></li>
                 <li><a href="#features">玩法</a></li>
                 <li><a href="#rules">规则</a></li>
-                <li><a href="#join">加入</a></li>
+                <li><a href="#ip">服务器IP</a></li>
             </ul>
         </nav>
         <button class="btn-copy" onclick="copyIP()">复制服务器IP</button>
@@ -169,29 +170,18 @@
 
     <!-- 首屏大图 -->
     <section class="hero" id="home">
-        <h1>欢迎来到方块世界</h1>
-        <p>纯净生存  • 友好社区 • 长期稳定运营</p>
-        <a href="#join" class="hero-btn">立即加入冒险</a>
+        <h1>欢迎来到无规定世界</h1>
+        <p>纯净生存 • 友好社区 • 长期稳定运营</p>
+        <a href="#ip" class="hero-btn">立即加入冒险</a>
     </section>
 
-    <!-- 实时状态监控 -->
-    <section class="status-section" id="join">
-        <h2 class="section-title">服务器实时状态</h2>
-        <div class="status-card">
-            <div class="status-item">
-                <h3>当前状态</h3>
-                <div class="status-value" id="server-status">检测中...</div>
-            </div>
-            <div class="status-item">
-                <h3>在线玩家</h3>
-                <div class="status-value" id="player-count">-- / --</div>
-            </div>
-            <div class="status-item">
-                <h3>网络延迟</h3>
-                <div class="status-value" id="server-ping">-- ms</div>
-            </div>
+    <!-- 服务器IP展示区 -->
+    <section class="ip-section" id="ip">
+        <h2 class="section-title">服务器连接信息</h2>
+        <div class="ip-box">
+            <div class="ip-address">9666.fun:42527</div>
+            <p class="ip-tip">长按上方 IP 复制，或点击右上角按钮</p>
         </div>
-        <p style="margin-top: 20px; color: #888;">基岩版服务器地址: <span style="color:white;">9666.fun:42527</span></p>
     </section>
 
     <!-- 特色玩法 -->
@@ -230,9 +220,7 @@
 
     <!-- 脚本逻辑 -->
     <script>
-        const serverIP = "9666.fun";
-        const serverPort = "42527";
-        const fullAddress = serverIP + ":" + serverPort;
+        const fullAddress = "9666.fun:42527";
 
         function copyIP() {
             navigator.clipboard.writeText(fullAddress).then(() => {
@@ -244,36 +232,11 @@
                     btn.innerText = originalText;
                     btn.style.background = "var(--mc-green)";
                 }, 2000);
+            }).catch(err => {
+                console.error("复制失败:", err);
+                alert("复制失败，请长按服务器 IP 手动复制");
             });
         }
-
-        async function fetchServerStatus() {
-            const statusEl = document.getElementById('server-status');
-            const playersEl = document.getElementById('player-count');
-            const pingEl = document.getElementById('server-ping');
-
-            try {
-                const response = await fetch(`https://api.mcsrvstat.us/bedrock/3/${serverIP}:${serverPort}`);
-                const data = await response.json();
-
-                if (data.online) {
-                    statusEl.innerHTML = "🟢 在线运行";
-                    statusEl.className = "status-value online";
-                    playersEl.innerText = `${data.players.online} / ${data.players.max}`;
-                    pingEl.innerText = "良好";
-                } else {
-                    statusEl.innerHTML = "🔴 离线维护";
-                    statusEl.className = "status-value offline";
-                    playersEl.innerText = "0 / 0";
-                }
-            } catch (error) {
-                console.error("获取状态失败:", error);
-                statusEl.innerHTML = "⚠️ 获取失败";
-            }
-        }
-
-        window.onload = fetchServerStatus;
-        setInterval(fetchServerStatus, 30000);
     </script>
 </body>
 </html>
