@@ -3,152 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的世界 - 基岩版生存服务器</title>
+    <title>GTL 2 B 2 T- 无规则生存服务器</title>
     <style>
-        /* --- 全局样式 --- */
+        /* 全局变量与基础设置 */
         :root {
             --mc-green: #55ff55;
-            --mc-dark: #1a1a1a;
-            --mc-gray: #333;
-            --text-color: #f0f0f0;
+            --mc-bg: #121212;
+            --mc-card-bg: #1f1f1f;
+            --text-main: #f5f5f5;
+            --text-sub: #b0b0b0;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--mc-dark);
-            color: var(--text-color);
+            background-color: var(--mc-bg);
+            color: var(--text-main);
             line-height: 1.6;
         }
         a { text-decoration: none; color: inherit; }
-        ul { list-style: none; }
 
-        /* --- 导航栏 --- */
+        /* 顶部导航与 IP 展示区 */
         header {
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0,0,0,0.85);
             padding: 1rem 5%;
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
+            backdrop-filter: blur(10px);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            backdrop-filter: blur(5px);
+            border-bottom: 2px solid var(--mc-green);
         }
-        .logo { font-size: 1.5rem; font-weight: bold; color: var(--mc-green); }
-        nav ul { display: flex; gap: 20px; }
-        nav a:hover { color: var(--mc-green); transition: 0.3s; }
-        .btn-copy {
+        .logo { font-size: 1.3rem; font-weight: bold; color: var(--mc-green); }
+        .copy-btn {
             background: var(--mc-green);
             color: #000;
-            padding: 8px 16px;
+            padding: 6px 15px;
             border-radius: 4px;
             font-weight: bold;
-            cursor: pointer;
             border: none;
-            transition: 0.3s;
+            cursor: pointer;
+            font-size: 0.9rem;
         }
-        .btn-copy:hover { background: #33cc33; transform: scale(1.05); }
 
-        /* --- 首屏 Hero 区域 --- */
         .hero {
-            height: 100vh;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1587573089734-09cb69c0f2b4?q=80&w=1920&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
+            margin-top: 60px;
+            padding: 4rem 1rem;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1596326772712-43021346d4e7?q=80&w=1920&auto=format&fit=crop') center/cover;
+            min-height: 40vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
-            padding: 0 20px;
         }
-        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px #000; }
-        .hero p { font-size: 1.2rem; margin-bottom: 2rem; max-width: 600px; }
-        .hero-btn {
-            padding: 12px 30px;
-            background: transparent;
-            border: 2px solid var(--mc-green);
-            color: var(--mc-green);
-            font-size: 1.1rem;
-            border-radius: 5px;
-            transition: 0.3s;
-        }
-        .hero-btn:hover { background: var(--mc-green); color: #000; }
-
-        /* --- 服务器IP展示区 --- */
-        .ip-section {
-            padding: 4rem 10%;
-            background: #222;
-            text-align: center;
-        }
-        .ip-box {
-            background: var(--mc-gray);
-            padding: 1.5rem 2rem;
-            border-radius: 10px;
-            display: inline-block;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            margin-top: 1rem;
-        }
-        .ip-address {
+        .main-ip {
             font-size: 2rem;
-            font-weight: bold;
+            font-weight: 800;
             color: var(--mc-green);
+            text-shadow: 0 0 10px rgba(85, 255, 85, 0.4);
+            margin: 1rem 0;
             letter-spacing: 1px;
         }
-        .ip-tip { margin-top: 15px; color: #aaa; font-size: 0.9rem; }
+        .status-tag {
+            background: rgba(85, 255, 85, 0.1);
+            border: 1px solid var(--mc-green);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--mc-green);
+        }
+        .tip { font-size: 0.85rem; color: var(--text-sub); margin-top: 10px; }
 
-        /* --- 特色玩法 --- */
-        .features { padding: 4rem 10%; }
-        .section-title { text-align: center; font-size: 2rem; margin-bottom: 3rem; color: var(--mc-green); }
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-        .feature-card {
-            background: var(--mc-gray);
-            padding: 2rem;
-            border-radius: 8px;
-            text-align: center;
-            transition: 0.3s;
-            border-bottom: 3px solid transparent;
-        }
-        .feature-card:hover { transform: translateY(-5px); border-bottom-color: var(--mc-green); }
-        .feature-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-
-        /* --- 服务器规则 --- */
-        .rules { padding: 4rem 10%; background: #222; }
-        .rules-list {
-            max-width: 800px;
-            margin: 0 auto;
-            background: var(--mc-gray);
-            padding: 2rem;
-            border-radius: 8px;
-        }
-        .rules-list li {
-            padding: 10px 0;
-            border-bottom: 1px solid #444;
+        /* 服务器信息卡片区 */
+        .section { padding: 3rem 10%; }
+        .section-title { text-align: center; font-size: 1.8rem; margin-bottom: 2rem; color: var(--mc-green); }
+        
+        .cards-container {
             display: flex;
-            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
         }
-        .rules-list li:last-child { border-bottom: none; }
-        .rules-list span { color: var(--mc-green); margin-right: 10px; font-weight: bold; }
+        .card {
+            background: var(--mc-card-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            border-left: 4px solid var(--mc-green);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        .card h3 { font-size: 1.4rem; margin-bottom: 1rem; }
+        .card p { margin-bottom: 0.5rem; color: var(--text-sub); font-size: 0.95rem; }
+        .card .val { color: var(--text-main); font-weight: bold; }
+        
+        .tag-group { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+        .tag { background: #333; padding: 3px 10px; border-radius: 4px; font-size: 0.8rem; color: #aaa; }
 
-        /* --- 页脚 --- */
+        /* 教程区 */
+        .tutorial-box { background: var(--mc-card-bg); padding: 2rem; border-radius: 10px; margin-bottom: 1rem; }
+        .tutorial-box h4 { color: var(--mc-green); margin-bottom: 1rem; }
+        .step { margin-bottom: 0.8rem; display: flex; align-items: flex-start; }
+        .step-num { color: var(--mc-green); font-weight: bold; margin-right: 10px; }
+
+        /* 页脚 */
         footer {
             background: #000;
             padding: 2rem;
             text-align: center;
-            color: #888;
+            color: #666;
             font-size: 0.9rem;
         }
-        
-        /* 移动端适配 */
+
+        /* 复制反馈 */
+        #toast {
+            visibility: hidden;
+            min-width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 50px;
+            padding: 12px;
+            position: fixed;
+            z-index: 1001;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 14px;
+            border: 1px solid var(--mc-green);
+        }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            nav ul { display: none; }
-            .ip-address { font-size: 1.5rem; }
+            .main-ip { font-size: 1.6rem; }
+            .section { padding: 2rem 5%; }
         }
     </style>
 </head>
@@ -156,86 +149,91 @@
 
     <!-- 导航栏 -->
     <header>
-        <div class="logo">无规则生存服</div>
-        <nav>
-            <ul>
-                <li><a href="#home">首页</a></li>
-                <li><a href="#features">玩法</a></li>
-                <li><a href="#rules">规则</a></li>
-                <li><a href="#ip">服务器IP</a></li>
-            </ul>
-        </nav>
-        <button class="btn-copy" onclick="copyIP()">复制服务器IP</button>
+        <div class="logo">GTL 2 B 2</div>
+        <button class="copy-btn" onclick="copyText('9666.fun:26349')">复制 IP</button>
     </header>
 
-    <!-- 首屏大图 -->
-    <section class="hero" id="home">
-        <h1>欢迎来到无规定世界</h1>
-        <p>纯净生存 • 友好社区 • 长期稳定运营</p>
-        <a href="#ip" class="hero-btn">立即加入冒险</a>
-    </section>
+    <!-- 主视觉区 -->
+    <div class="hero">
+        <h1>欢迎来到无规则的世界</h1>
+        <div class="main-ip">9666.fun:26349</div>
+        <div class="status-tag">支持离线登录 • 多版本互通</div>
+        <div class="tip">点击上方按钮或长按 IP 直接复制</div>
+    </div>
 
-    <!-- 服务器IP展示区 -->
-    <section class="ip-section" id="ip">
-        <h2 class="section-title">服务器连接信息</h2>
-        <div class="ip-box">
-            <div class="ip-address">9666.fun:42527</div>
-            <p class="ip-tip">长按上方 IP 复制，或点击右上角按钮</p>
-        </div>
-    </section>
-
-    <!-- 特色玩法 -->
-    <section class="features" id="features">
-        <h2 class="section-title">服务器特色</h2>
-        <div class="feature-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🌿</div>
-                <h3>纯净生存</h3>
-                <p>保留原版生存体验，只有最纯粹的方块乐趣。</p>
+    <!-- 服务器参数展示 -->
+    <div class="section">
+        <h2 class="section-title">服务器详细信息</h2>
+        <div class="cards-container">
+            
+            <!-- Java 版卡片 -->
+            <div class="card">
+                <h3>Java 版服务器</h3>
+                <p>服务端版本: <span class="val">1.7.10-26.3</span></p>
+                <p>服务器地址: <span class="val">9666.fun:26349</span></p>
+                <div class="tag-group">
+                    <span class="tag">支持离线登录</span>
+                    <span class="tag">基岩互通</span>
+                </div>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">📱</div>
-                <h3>基岩版全平台</h3>
-                <p>支持手机、平板、主机、Win10 等基岩版全平台无缝联机。</p>
+
+            <!-- 基岩版卡片 -->
+            <div class="card">
+                <h3>基岩版 (Bedrock)</h3>
+                <p>核心版本: <span class="val">26.44</span></p>
+                <p>服务器地址: <span class="val">9666.fun</span></p>
+                <p>端口 (Port): <span class="val">26349</span></p>
+                <div class="tag-group">
+                    <span class="tag">手机/主机/Win10 均可进入</span>
+                </div>
             </div>
+
         </div>
-    </section>
+    </div>
 
-    <!-- 服务器规则 -->
-    <section class="rules" id="rules">
-        <h2 class="section-title">玩家守则</h2>
-        <ul class="rules-list">
-            <li><span>01</span> 可以使用任何作弊客户端或外挂。</li>
-            <li><span>02</span> 可以恶意破坏他人建筑或偷窃财物。</li>
-            <li><span>03</span> 聊天室请保持友善，禁止刷屏和广告。</li>
-            <li><span>04</span> 禁止建造高频红石机器导致服务器卡顿。</li>
-        </ul>
-    </section>
+    <!-- 如何连接教程 -->
+    <div class="section" style="padding-top: 0;">
+        <h2 class="section-title">如何加入服务器？</h2>
+        
+        <div class="tutorial-box">
+            <h4>🎮 Java 版玩家步骤</h4>
+            <div class="step"><span class="step-num">1.</span> 打开 Minecraft，点击"多人游戏"</div>
+            <div class="step"><span class="step-num">2.</span> 点击"添加服务器"</div>
+            <div class="step"><span class="step-num">3.</span> 服务器地址输入：9666.fun:26349</div>
+            <div class="step"><span class="step-num">4.</span> 完成！无需正版账号，直接点击加入即可</div>
+        </div>
 
-    <!-- 页脚 -->
+        <div class="tutorial-box">
+            <h4>📱 基岩版/PE玩家步骤</h4>
+            <div class="step"><span class="step-num">1.</span> 在游戏主界面点击"服务器"选项卡</div>
+            <div class="step"><span class="step-num">2.</span> 滑到最下方，点击"添加服务器"</div>
+            <div class="step"><span class="step-num">3.</span> 输入地址: 9666.fun，端口: 26349</div>
+            <div class="step"><span class="step-num">4.</span> 保存并点击服务器卡片进入</div>
+        </div>
+    </div>
+
     <footer>
-        <p>&copy; 2026 方块生存服务器. All Rights Reserved.</p>
         <p>QQ交流群: 434312549</p>
+        <p>&copy; 2026 无规则生存服务器. All Rights Reserved.</p>
     </footer>
 
-    <!-- 脚本逻辑 -->
-    <script>
-        const fullAddress = "9666.fun:42527";
+    <!-- 提示框 -->
+    <div id="toast">IP 已复制到剪贴板！</div>
 
-        function copyIP() {
-            navigator.clipboard.writeText(fullAddress).then(() => {
-                const btn = document.querySelector('.btn-copy');
-                const originalText = btn.innerText;
-                btn.innerText = "已复制！";
-                btn.style.background = "#fff";
-                setTimeout(() => {
-                    btn.innerText = originalText;
-                    btn.style.background = "var(--mc-green)";
-                }, 2000);
+    <script>
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast("IP 已复制到剪贴板！");
             }).catch(err => {
-                console.error("复制失败:", err);
-                alert("复制失败，请长按服务器 IP 手动复制");
+                showToast("复制失败，请长按 IP 手动复制");
             });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.innerText = message;
+            toast.className = "show";
+            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
         }
     </script>
 </body>
