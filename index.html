@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的世界 - 基岩版生存服务器</title>
+    <style>
+        /* --- 全局样式 --- */
+        :root {
+            --mc-green: #55ff55;
+            --mc-dark: #1a1a1a;
+            --mc-gray: #333;
+            --text-color: #f0f0f0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--mc-dark);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- 导航栏 --- */
+        header {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        .logo { font-size: 1.5rem; font-weight: bold; color: var(--mc-green); }
+        nav ul { display: flex; gap: 20px; }
+        nav a:hover { color: var(--mc-green); transition: 0.3s; }
+        .btn-copy {
+            background: var(--mc-green);
+            color: #000;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: 0.3s;
+        }
+        .btn-copy:hover { background: #33cc33; transform: scale(1.05); }
+
+        /* --- 首屏 Hero 区域 --- */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1587573089734-09cb69c0f2b4?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 60px;
+        }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px #000; }
+        .hero p { font-size: 1.2rem; margin-bottom: 2rem; max-width: 600px; }
+        .hero-btn {
+            padding: 12px 30px;
+            background: transparent;
+            border: 2px solid var(--mc-green);
+            color: var(--mc-green);
+            font-size: 1.1rem;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        .hero-btn:hover { background: var(--mc-green); color: #000; }
+
+        /* --- 实时状态 --- */
+        .status-section {
+            padding: 4rem 10%;
+            background: #222;
+            text-align: center;
+        }
+        .status-card {
+            background: var(--mc-gray);
+            padding: 2rem;
+            border-radius: 10px;
+            display: inline-flex;
+            gap: 3rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .status-item h3 { color: #888; font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .status-value { font-size: 2rem; font-weight: bold; }
+        .online { color: var(--mc-green); }
+        .offline { color: #ff5555; }
+
+        /* --- 特色玩法 --- */
+        .features { padding: 4rem 10%; }
+        .section-title { text-align: center; font-size: 2rem; margin-bottom: 3rem; color: var(--mc-green); }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .feature-card {
+            background: var(--mc-gray);
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        .feature-card:hover { transform: translateY(-5px); border-bottom-color: var(--mc-green); }
+        .feature-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+
+        /* --- 服务器规则 --- */
+        .rules { padding: 4rem 10%; background: #222; }
+        .rules-list {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--mc-gray);
+            padding: 2rem;
+            border-radius: 8px;
+        }
+        .rules-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #444;
+            display: flex;
+            align-items: center;
+        }
+        .rules-list li:last-child { border-bottom: none; }
+        .rules-list span { color: var(--mc-green); margin-right: 10px; font-weight: bold; }
+
+        /* --- 页脚 --- */
+        footer {
+            background: #000;
+            padding: 2rem;
+            text-align: center;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            nav ul { display: none; }
+            .status-card { flex-direction: column; gap: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 导航栏 -->
+    <header>
+        <div class="logo"> GTL 2 B 2 T生存服</div>
+        <nav>
+            <ul>
+                <li><a href="#home">首页</a></li>
+                <li><a href="#features">玩法</a></li>
+                <li><a href="#rules">规则</a></li>
+                <li><a href="#join">加入</a></li>
+            </ul>
+        </nav>
+        <button class="btn-copy" onclick="copyIP()">复制服务器IP</button>
+    </header>
+
+    <!-- 首屏大图 -->
+    <section class="hero" id="home">
+        <h1>欢迎来到方块世界</h1>
+        <p>纯净生存  • 友好社区 • 长期稳定运营</p>
+        <a href="#join" class="hero-btn">立即加入冒险</a>
+    </section>
+
+    <!-- 实时状态监控 -->
+    <section class="status-section" id="join">
+        <h2 class="section-title">服务器实时状态</h2>
+        <div class="status-card">
+            <div class="status-item">
+                <h3>当前状态</h3>
+                <div class="status-value" id="server-status">检测中...</div>
+            </div>
+            <div class="status-item">
+                <h3>在线玩家</h3>
+                <div class="status-value" id="player-count">-- / --</div>
+            </div>
+            <div class="status-item">
+                <h3>网络延迟</h3>
+                <div class="status-value" id="server-ping">-- ms</div>
+            </div>
+        </div>
+        <p style="margin-top: 20px; color: #888;">基岩版服务器地址: <span style="color:white;">9666.fun:42527</span></p>
+    </section>
+
+    <!-- 特色玩法 -->
+    <section class="features" id="features">
+        <h2 class="section-title">服务器特色</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🌿</div>
+                <h3>纯净生存</h3>
+                <p>保留原版生存体验，只有最纯粹的方块乐趣。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>基岩版全平台</h3>
+                <p>支持手机、平板、主机、Win10 等基岩版全平台无缝联机。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 服务器规则 -->
+    <section class="rules" id="rules">
+        <h2 class="section-title">玩家守则</h2>
+        <ul class="rules-list">
+            <li><span>01</span> 可以使用任何作弊客户端或外挂。</li>
+            <li><span>02</span> 可以恶意破坏他人建筑或偷窃财物。</li>
+            <li><span>03</span> 聊天室请保持友善，禁止刷屏和广告。</li>
+            <li><span>04</span> 禁止建造高频红石机器导致服务器卡顿。</li>
+        </ul>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>&copy; 2026 方块生存服务器. All Rights Reserved.</p>
+        <p>QQ交流群: 434312549</p>
+    </footer>
+
+    <!-- 脚本逻辑 -->
+    <script>
+        const serverIP = "9666.fun";
+        const serverPort = "42527";
+        const fullAddress = serverIP + ":" + serverPort;
+
+        function copyIP() {
+            navigator.clipboard.writeText(fullAddress).then(() => {
+                const btn = document.querySelector('.btn-copy');
+                const originalText = btn.innerText;
+                btn.innerText = "已复制！";
+                btn.style.background = "#fff";
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = "var(--mc-green)";
+                }, 2000);
+            });
+        }
+
+        async function fetchServerStatus() {
+            const statusEl = document.getElementById('server-status');
+            const playersEl = document.getElementById('player-count');
+            const pingEl = document.getElementById('server-ping');
+
+            try {
+                const response = await fetch(`https://api.mcsrvstat.us/bedrock/3/${serverIP}:${serverPort}`);
+                const data = await response.json();
+
+                if (data.online) {
+                    statusEl.innerHTML = "🟢 在线运行";
+                    statusEl.className = "status-value online";
+                    playersEl.innerText = `${data.players.online} / ${data.players.max}`;
+                    pingEl.innerText = "良好";
+                } else {
+                    statusEl.innerHTML = "🔴 离线维护";
+                    statusEl.className = "status-value offline";
+                    playersEl.innerText = "0 / 0";
+                }
+            } catch (error) {
+                console.error("获取状态失败:", error);
+                statusEl.innerHTML = "⚠️ 获取失败";
+            }
+        }
+
+        window.onload = fetchServerStatus;
+        setInterval(fetchServerStatus, 30000);
+    </script>
+</body>
+</html>
